@@ -1,0 +1,30 @@
+"""Load git environment settings
+
+Looks for .env or dotenv file. If in Google Colab, tries to mount Google Drive
+and look for the .env/dotenv file in /content/drive/MyDrive.
+"""
+# Approach inspired by the work of GitHub user ffreemt
+# found at https://github.com/ffreemt/colab-misc-utils
+import sys
+from pydantic import BaseSettings
+from pathlib import Path
+
+class git_settings(BaseSettings):
+  user_name: str = ""
+  user_email: str = ""
+  gh_token: str = ""
+
+  class Config:
+    env_file = ".env" # default setting
+    if "google.colab" in sys.modules:
+      basedir = Path("/content/drive/MyDrive")
+      # if Google Drive is not mounted, do that now
+      if not basedir.is_dir():
+        from google.colab import drive
+        drive.mount('/content/drive')
+      if basedir.joinpath("dotenv").is_file():
+        env_file = basedir.joinpath("dotenv")
+      elif basedir.joinpath(".env").is_file():
+        env_file = basedir.joinpath(".env")
+
+
