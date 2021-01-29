@@ -1,10 +1,10 @@
 # __init__.py for whit-phys-utils
 
-name = "whit-phys-utils"
-__version__ = "0.1.0"
+name = "whit_phys_utils"
+__version__ = "0.1.2"
 VERSION = __version__.split(".")
 
-from .git_access import local_repository
+from .git_access import *
 from .pretty_fit import fitTable, prettyPolyFit
 
 # def local_repository(repo, clone=True, branch="main", auth_method="env"):

@@ -4,14 +4,14 @@ from getpass import getpass
 from logzero import logging
 from subprocess import call
 
+from ._run_cmd import run_secret_cmd, run_cmd
+from ._git_settings import git_settings
+
 # Based on code developed by Jordan Lueck and Paddy Alton
 # https://pypi.org/project/colab-repoclone/
 
 class LocalRepo:
-    from .run_cmd import run_secret_cmd, run_cmd
-    from .git_settings import git_settings
-
-    def __init__(self, repo, clone=True, branch="main", auth_method="env"):
+    def __init__(self, repo, clone=True, branch="main", auth_method="env", expert_mode=False):
         """
         __init__
 
@@ -33,10 +33,18 @@ class LocalRepo:
 
         self.access_repo = f"https://{self.github_user}:{self.github_token}@{repo_url}"
         self.branch = branch
+        self.expert_mode = expert_mode
 
         run_cmd(f"git config --global user.name {self.github_user}")
         run_cmd(f"git config --global user.email {self.github_email}")
         run_cmd("git config --global init.defaultBranch main")
+
+        self.in_colab = "google.colab" in sys.modules
+        if self.in_colab:
+            self.base_dir = '/content'
+        else:
+            self.base_dir = os.getcwd()
+        self.repo_path = os.path.join(self.base_dir, self.repo_dir)
 
         if clone:
             self.clone()
@@ -49,22 +57,13 @@ class LocalRepo:
 
         Clones repository using username and access key.
         """
-        in_colab = "google.colab" in sys.modules
-        if in_colab:
-            base_dir = '/content'
-        else:
-            base_dir = '.'
-            logging.error("Only Colab is currently supported")
-
-        os.chdir(base_dir)
-        repo_path = os.path.join(base_dir, self.repo_dir)
-
+        os.chdir(self.base_dir)
         if self.branch == "main":
             clone_cmd = f"git clone {self.access_repo}"
         else:
             clone_cmd = f"git clone --branch {self.branch} {self.access_repo}"
         run_secret_cmd(clone_cmd)
-        os.chdir(repo_path)
+        os.chdir(self.repo_path)
 
 
     def new(self):
@@ -75,15 +74,8 @@ class LocalRepo:
         access key.
 
         """
-        in_colab = "google.colab" in sys.modules
-        if in_colab:
-            base_dir = '/content'
-        else:
-            base_dir = '.'
-            logging.error("Only Colab is currently supported")
-        repo_path = os.path.join(base_dir, self.repo_dir)
         try:
-            os.chdir(repo_path)
+            os.chdir(self.repo_path)
         except OSError:
             print(
                 f"No directory named {self.repo_dir} exists. Are you sure you made it?"
@@ -108,13 +100,11 @@ class LocalRepo:
             print(
                 "Command: < git pull origin main --allow-unrelated-histories > failed. Check your permissions."
             )
-            os.chdir("/content")
             return
 
         add = run_cmd("git add .")
         if add:
             print("Command: < git add . > failed. Check your permissions.")
-            os.chdir("/content")
             return
 
         commit = run_cmd("git commit -m 'First Commit from Google Colab'")
@@ -122,7 +112,6 @@ class LocalRepo:
             print(
                 f"Command: < git commit -m 'First Commit from Google Colab' > failed. Possibly because there were no files in /{self.repo_dir}"
             )
-            os.chdir("/content")
             return
 
         push = run_cmd("git push --set-upstream origin main")
@@ -139,15 +128,7 @@ class LocalRepo:
         Pulls latest changes from GitHub repo into local Google Colab environment
 
         """
-        in_colab = "google.colab" in sys.modules
-        if in_colab:
-            base_dir = '/content'
-        else:
-            base_dir = '.'
-            logging.error("Only Colab is currently supported")
-        repo_path = os.path.join(base_dir, self.repo_dir)
-        os.chdir(repo_path)
-
+        os.chdir(self.repo_path)
         pull = run_cmd("git pull")
         if pull:
             print("Command: < git pull > failed. Check your permissions.")
@@ -179,14 +160,7 @@ class LocalRepo:
             print("\n!! PUSH ABORTED !!\n")
             return
 
-        in_colab = "google.colab" in sys.modules
-        if in_colab:
-            base_dir = '/content'
-        else:
-            base_dir = '.'
-            logging.error("Only Colab is currently supported")
-        repo_path = os.path.join(base_dir, self.repo_dir)
-        os.chdir(repo_path)
+        os.chdir(self.repo_path)
 
         add = run_cmd(f"git add {file_path}")
         if add:
@@ -220,14 +194,7 @@ class LocalRepo:
         if branch_name is None:
             branch_name = input("New Branch :: ")
 
-        in_colab = "google.colab" in sys.modules
-        if in_colab:
-            base_dir = '/content'
-        else:
-            base_dir = '.'
-            logging.error("Only Colab is currently supported")
-        repo_path = os.path.join(base_dir, self.repo_dir)
-        os.chdir(repo_path)
+        os.chdir(self.repo_path)
 
         brc = run_cmd(f"git branch {branch_name}")
         if brc:
@@ -270,14 +237,7 @@ class LocalRepo:
         if branch_name is None:
             branch_name = input("Checkout Branch :: ")
 
-        in_colab = "google.colab" in sys.modules
-        if in_colab:
-            base_dir = '/content'
-        else:
-            base_dir = '.'
-            logging.error("Only Colab is currently supported")
-        repo_path = os.path.join(base_dir, self.repo_dir)
-        os.chdir(repo_path)
+        os.chdir(self.repo_path)
 
         chk = run_cmd(f"git checkout {branch_name}")
         if chk:
@@ -313,18 +273,15 @@ class LocalRepo:
         * Press "q" to abort. Press any other key to continue...        *
         *****************************************************************
         """
+        if (not self.expert_mode):
+            print("\n Repo reset is only permitted in expert mode \n")
+            return
+
         if input(check).lower() == "q":
             print("\n!! RESET ABORTED !!\n")
             return
 
-        in_colab = "google.colab" in sys.modules
-        if in_colab:
-            base_dir = '/content'
-        else:
-            base_dir = '.'
-            logging.error("Only Colab is currently supported")
-        repo_path = os.path.join(base_dir, self.repo_dir)
-        os.chdir(repo_path)
+        os.chdir(self.repo_path)
 
         if commit is None:
             reset_cmd = "git reset --hard"
@@ -373,7 +330,7 @@ class LocalRepo:
         self.github_email = input("GitHub Email :: ")
         self.github_token = getpass("GitHub Authorization Token :: ")
 
-def local_repository(repo, clone=True, branch="main", auth_method="env"):
+def local_repository(repo, clone=True, branch="main", auth_method="env", expert_mode=False):
     """
     local_repository
 
@@ -400,6 +357,6 @@ def local_repository(repo, clone=True, branch="main", auth_method="env"):
     if not clone:
         branch = "main"
 
-    return LocalRepo(repo, clone=clone, branch=branch, auth_method=auth_method)
+    return LocalRepo(repo, clone=clone, branch=branch, auth_method=auth_method, expert_mode = expert_mode)
 
-    __all__ = [local_repository]
+__all__ = [local_repository]
