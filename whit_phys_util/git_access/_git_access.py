@@ -57,9 +57,9 @@ class LocalRepo:
         """
         os.chdir(self.base_dir)
         if self.branch == "main":
-            clone_cmd = f"git clone --verbose {self.access_repo}"
+            clone_cmd = f"git clone --progress {self.access_repo}"
         else:
-            clone_cmd = f"git clone --verbose --branch {self.branch} {self.access_repo}"
+            clone_cmd = f"git clone --progress --branch {self.branch} {self.access_repo}"
         run_secret_cmd(clone_cmd, verbose=True)
         os.chdir(self.repo_path)
 
