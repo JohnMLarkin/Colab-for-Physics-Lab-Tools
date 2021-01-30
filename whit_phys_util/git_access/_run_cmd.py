@@ -12,9 +12,9 @@ def run_secret_cmd(cmd):
     """
     cp = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
     if (cp.returncode):
-        print(cp.stderr)
+        print(cp.stderr.strip())
     else:
-        print(cp.stdout)
+        print(cp.stdout.strip())
     return cp.returncode
 
 def run_cmd(cmd):
@@ -24,9 +24,9 @@ def run_cmd(cmd):
     """
     cp = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
     if (cp.returncode):
-        print(cp.args)
-        print(cp.stderr)
+        print(cp.args.strip())
+        print(cp.stderr.strip())
     else:
-        print(cp.stdout)
+        print(cp.stdout.strip())
     return cp.returncode
 

@@ -1,7 +1,6 @@
 import os
 import sys
 from getpass import getpass
-from subprocess import call
 
 from ._run_cmd import run_secret_cmd, run_cmd
 from ._git_settings import git_settings
@@ -329,33 +328,3 @@ class LocalRepo:
         self.github_email = input("GitHub Email :: ")
         self.github_token = getpass("GitHub Authorization Token :: ")
 
-def local_repository(repo, clone=True, branch="main", auth_method="env", expert_mode=False):
-    """
-    local_repository
-
-    Call this method to create an instance of a GitHub repository in the 
-    Google Colab environment. You can then use the class methods to push
-    and pull from this repo, among other things, directly from Colab.
-
-    INPUTS:
-        repo - the link to the GitHub repository for cloning or the empty
-                GitHub repo for initializing
-
-    KEYWORDS:
-        clone=True - indicates whether a new repository is being created
-            locally and uploaded to GitHub, rather than a clone
-        branch="main" - the specific branch to clone, if desired
-        auth_method="env" - indicates where to look for your GitHub credentials.
-            "env" will expect them in a .env or dotenv file on Google Drive, anything
-            else will prompt the user to input them.
-
-    RETURNS:
-        A LocalRepo instance
-    """
-    # Branch is forced to "main" for creating new repositories
-    if not clone:
-        branch = "main"
-
-    return LocalRepo(repo, clone=clone, branch=branch, auth_method=auth_method, expert_mode = expert_mode)
-
-__all__ = [local_repository]
