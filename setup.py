@@ -1,12 +1,11 @@
 import setuptools
-from whit_phys_util.__init__ import __version__
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="whit-phys-util",
-    version=__version__,
+    version="0.1.6.dev13",
     author="John Larkin",
     author_email="jlarkin@whitworth.edu",
     description="Tools to support use of Google Colab + GitHub Classroom for physics lab instruction",
