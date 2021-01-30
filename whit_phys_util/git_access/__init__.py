@@ -1,3 +1,1 @@
-from ._git_access import *
-
-__all__ = [local_repository]
+from ._git_access import local_repository
