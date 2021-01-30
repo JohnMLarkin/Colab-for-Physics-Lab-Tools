@@ -10,9 +10,9 @@ def run_secret_cmd(cmd):
     Runs a command using subprocess.run with some error logging, but no command echo to
     to avoid revealing secret info.
     """
-    cp = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+    cp = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
     if (cp.returncode):
-        print("ERROR: ", cp.stderr)
+        print("ERROR: ", (cp.stderr).strip())
     else:
         print(cp.stdout)
     return cp.returncode

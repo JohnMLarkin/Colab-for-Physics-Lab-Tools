@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="whit-phys-util",
-    version="0.1.6.dev4",
+    version="0.1.6.dev6",
     author="John Larkin",
     author_email="jlarkin@whitworth.edu",
     description="Tools to support use of Google Colab + GitHub Classroom for physics lab instruction",
