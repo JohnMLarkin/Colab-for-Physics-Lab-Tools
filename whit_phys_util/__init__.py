@@ -1,7 +1,7 @@
 # __init__.py for whit-phys-utils
 
 name = "whit_phys_utils"
-__version__ = "0.1.6.dev9"
+__version__ = "0.1.6.dev10"
 VERSION = __version__.split(".")
 
 from .git_access import *
