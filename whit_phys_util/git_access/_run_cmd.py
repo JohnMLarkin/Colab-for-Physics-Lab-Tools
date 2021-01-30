@@ -3,7 +3,6 @@
 Some error logging is performed with goal of avoiding echo of secret info.
 """
 import subprocess
-from logzero import logger
 
 def run_secret_cmd(cmd):
     """run_secret_cmd
@@ -13,7 +12,7 @@ def run_secret_cmd(cmd):
     """
     cp = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
     if (cp.returncode):
-        logger.error("%s", cp.stderr)
+        print("ERROR: ", cp.stderr)
     else:
         print(cp.stdout)
     return cp.returncode
@@ -25,8 +24,8 @@ def run_cmd(cmd):
     """
     cp = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
     if (cp.returncode):
-        logger.info("%s", cp.args)
-        logger.error("%s", cp.stderr)
+        print("CMD: ", cp.args)
+        print("ERROR: ", cp.stderr)
     else:
         print(cp.stdout)
     return cp.returncode

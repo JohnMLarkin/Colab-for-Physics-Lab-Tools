@@ -1,7 +1,6 @@
 import os
 import sys
 from getpass import getpass
-from logzero import logging
 from subprocess import call
 
 from ._run_cmd import run_secret_cmd, run_cmd

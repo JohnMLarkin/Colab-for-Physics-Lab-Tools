@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="whit-phys-util",
-    version="0.1.6.dev2",
+    version="0.1.6.dev4",
     author="John Larkin",
     author_email="jlarkin@whitworth.edu",
     description="Tools to support use of Google Colab + GitHub Classroom for physics lab instruction",
@@ -15,7 +15,6 @@ setuptools.setup(
     install_requires = [
         'pydantic >= 1.7.3',
         'python-dotenv >= 0.10.4',
-        'logzero >= 1.6.3'
     ],
     packages=setuptools.find_packages(),
     classifiers=[
