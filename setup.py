@@ -3,7 +3,7 @@ import setuptools
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
-with open("version.txt", "r", encoding="utf-8") as fh:
+with open("whit_phys_util/version.txt", "r", encoding="utf-8") as fh:
     version = fh.read()
 
 setuptools.setup(
