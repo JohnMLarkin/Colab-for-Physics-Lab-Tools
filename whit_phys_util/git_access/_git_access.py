@@ -9,7 +9,7 @@ from ._git_settings import git_settings
 # https://pypi.org/project/colab-repoclone/
 
 class LocalRepo:
-    def __init__(self, repo, clone=True, branch="main", auth_method="env", expert_mode=False):
+    def __init__(self, repo, clone=True, branch="main", auth_method="env", expert_mode=False, verbose=False):
         """
         __init__
 
@@ -45,11 +45,11 @@ class LocalRepo:
         self.repo_path = os.path.join(self.base_dir, self.repo_dir)
 
         if clone:
-            self.clone()
+            self.clone(verbose)
         else:
             self.new()
 
-    def clone(self):
+    def clone(self, verbose=False):
         """
         clone
 
@@ -60,7 +60,7 @@ class LocalRepo:
             clone_cmd = f"git clone --progress {self.access_repo}"
         else:
             clone_cmd = f"git clone --progress --branch {self.branch} {self.access_repo}"
-        run_secret_cmd(clone_cmd, verbose=True)
+        run_secret_cmd(clone_cmd, verbose=verbose)
         os.chdir(self.repo_path)
 
 
@@ -81,7 +81,7 @@ class LocalRepo:
             return
 
         run_cmd("git init")
-        origin = run_secret_cmd(f"git remote add origin {self.access_repo}")
+        origin = run_secret_cmd(f"git remote add origin {self.access_repo}", verbose=verbose)
         if origin:
             run_cmd("git remote rm origin")
             origin = run_secret_cmd(f"git remote add origin {self.access_repo}")
@@ -119,7 +119,7 @@ class LocalRepo:
             )
 
 
-    def pull(self):
+    def pull(self, verbose=False):
         """
         pull
 
@@ -127,11 +127,11 @@ class LocalRepo:
 
         """
         os.chdir(self.repo_path)
-        pull = run_cmd("git pull")
+        pull = run_cmd("git pull", verbose=verbose)
         if pull:
             print("Command: < git pull > failed. Check your permissions.")
 
-    def push(self, commit_msg=None, file_path="."):
+    def push(self, commit_msg=None, file_path=".", verbose=False):
         """
         push
 
@@ -172,7 +172,7 @@ class LocalRepo:
             )
             return
 
-        push = run_cmd("git push")
+        push = run_cmd("git push", verbose=verbose)
         if push:
             print("Command: < git push > failed. Check your permissions.")
 
