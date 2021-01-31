@@ -54,6 +54,7 @@ class LocalRepo:
         clone
 
         Clones repository using username and access key.
+        Set verbose=True to get output from clone command.
         """
         os.chdir(self.base_dir)
         if self.branch == "main":
@@ -125,6 +126,9 @@ class LocalRepo:
 
         Pulls latest changes from GitHub repo into local Google Colab environment
 
+        INPUTS:
+            verbose=False - should output of git pull be displayed?
+
         """
         os.chdir(self.repo_path)
         pull = run_cmd("git pull", verbose=verbose)
@@ -142,6 +146,7 @@ class LocalRepo:
                 will prompt for user input.
             file_path - path to specific files desired to push, defaults to all 
                 files in repository.
+            verbose=False - should output of git push be displayed?
 
         """
         if commit_msg is None:

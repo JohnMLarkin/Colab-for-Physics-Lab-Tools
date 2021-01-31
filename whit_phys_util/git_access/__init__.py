@@ -1,6 +1,6 @@
 from ._git_access import LocalRepo
 
-def local_repository(repo, clone=True, branch="main", auth_method="env", expert_mode=False):
+def local_repository(repo, clone=True, branch="main", auth_method="env", expert_mode=False, verbose=False):
     """
     local_repository
 
@@ -20,6 +20,7 @@ def local_repository(repo, clone=True, branch="main", auth_method="env", expert_
             "env" will expect them in a .env or dotenv file on Google Drive, anything
             else will prompt the user to input them.
         expert_mode=False - indicates whether higher risk git commands are permitted
+        verbose=False - indicates whether output of selected git commands should be displayed
 
     RETURNS:
         A LocalRepo instance
@@ -28,6 +29,6 @@ def local_repository(repo, clone=True, branch="main", auth_method="env", expert_
     if not clone:
         branch = "main"
 
-    return LocalRepo(repo, clone=clone, branch=branch, auth_method=auth_method, expert_mode = expert_mode)
+    return LocalRepo(repo, clone=clone, branch=branch, auth_method=auth_method, expert_mode = expert_mode, verbose=False)
 
 __all__ = ["local_repository"]

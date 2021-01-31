@@ -37,6 +37,11 @@ def prettyPolyFit(x, y, deg = 1, yerr = None, paramLabels = ['slope', 'intercept
         yerr=None - NumPy array of uncertainties in dependent values
         paramLabels=['slope','intercept'] - list of strings, default assumes linear fit with slope first
         ci_factor=2 - confidence interval factor (1 = 68%, 2 = 95.4%, etc.), only used if yerr=None. If yerr provided then confidence interval is same as those uncertainties.
+
+    RETURNS:
+        (fit_table, fit_func) where
+            fit_table is a DataFrame with values and uncertainities of the fit parameters
+            fit_func is polynomial function representing the best fit
     """
     if (yerr):
         ci_factor = 1
