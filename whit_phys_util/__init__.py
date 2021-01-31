@@ -1,8 +1,7 @@
 # __init__.py for whit-phys-utils
 
 name = "whit_phys_utils"
-with open("version.txt", "r", encoding="utf-8") as fh:
-    __version__ = fh.read()
+from ._version import __version__
 
 VERSION = __version__.split(".")
 
