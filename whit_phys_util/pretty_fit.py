@@ -40,7 +40,7 @@ def prettyPolyFit(x, y, deg = 1, yerr = None, paramLabels = ['slope', 'intercept
     """
     if (yerr):
         ci_factor = 1
-        fitPoly, fitCov = np.polyfit(x, y, w=1/yerr, deg, cov=True)
+        fitPoly, fitCov = np.polyfit(x, y, deg, w=1/yerr, cov=True)
     else:
         fitPoly, fitCov = np.polyfit(x, y, deg, cov=True)
     return (fitTable(fitPoly, fitCov, paramLabels=paramLabels, ci_factor=ci_factor), np.poly1d(fitPoly)) 
