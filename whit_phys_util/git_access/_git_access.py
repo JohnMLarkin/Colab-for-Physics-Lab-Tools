@@ -165,12 +165,12 @@ class LocalRepo:
 
         os.chdir(self.repo_path)
 
-        add = run_cmd(f"git add {file_path}")
+        add = run_cmd(f"git add {file_path}", verbose=verbose)
         if add:
             print(f"Command: < git add {file_path} > failed. Check your permissions.")
             return
 
-        commit = run_cmd(f"git commit -m '{commit_msg}'")
+        commit = run_cmd(f"git commit -m '{commit_msg}'", verbose=verbose)
         if commit:
             print(
                 f"Command: < git commit -m '{commit_msg}' > failed. Possibly because no changes were made. Also ensure there were no single or double quotation marks in your commit message."
