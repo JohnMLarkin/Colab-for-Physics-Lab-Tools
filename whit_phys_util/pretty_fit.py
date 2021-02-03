@@ -43,7 +43,7 @@ def prettyPolyFit(x, y, deg = 1, yerr = None, paramLabels = ['slope', 'intercept
             fit_table is a DataFrame with values and uncertainities of the fit parameters
             fit_func is polynomial function representing the best fit
     """
-    if (yerr):
+    if yerr is not None:
         ci_factor = 1
         fitPoly, fitCov = np.polyfit(x, y, deg, w=1/yerr, cov=True)
     else:
