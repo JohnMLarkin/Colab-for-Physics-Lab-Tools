@@ -45,7 +45,12 @@ class LocalRepo:
         self.repo_path = os.path.join(self.base_dir, self.repo_dir)
 
         if clone:
-            self.clone(verbose)
+            if os.path.exist(self.repo_path):
+                print('Repository exists at this location. Pulling changes from GitHub.')
+                self.pull(verbose)
+            else:
+                print('Cloning repository from GitHub.')
+                self.clone(verbose)
         else:
             self.new()
 
