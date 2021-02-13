@@ -10,21 +10,23 @@ from pydantic import BaseSettings
 from pathlib import Path
 
 class git_settings(BaseSettings):
-  user_name: str = ""
-  user_email: str = ""
-  gh_token: str = ""
+    user_name: str = ""
+    user_email: str = ""
+    gh_token: str = ""
 
-  class Config:
-    env_file = ".env" # default setting
-    if "google.colab" in sys.modules:
-      basedir = Path("/content/drive/MyDrive")
-      # if Google Drive is not mounted, do that now
-      if not basedir.is_dir():
-        from google.colab import drive
-        drive.mount('/content/drive')
-      if basedir.joinpath("dotenv").is_file():
-        env_file = basedir.joinpath("dotenv")
-      elif basedir.joinpath(".env").is_file():
-        env_file = basedir.joinpath(".env")
+    class Config:
+        env_file = ".env" # default setting
+        if "google.colab" in sys.modules:
+        basedir = Path("/content/drive/MyDrive")
+        # if Google Drive is not mounted, do that now
+        if not basedir.is_dir():
+            from google.colab import drive
+            drive.mount('/content/drive')
+        if basedir.joinpath(".env").is_file():
+            env_file = basedir.joinpath(".env")
+        elif basedir.joinpath("dotenv").is_file():
+            env_file = basedir.joinpath("dotenv")
+        elif basedir.joinpath("dotenv.txt").is_file():
+            env_file = basedir.joinpath("dotenv.txt")
 
 
