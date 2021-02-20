@@ -17,7 +17,7 @@ class git_settings(BaseSettings):
     class Config:
         env_file = ".env" # default setting
         if "google.colab" in sys.modules:
-        basedir = Path("/content/drive/MyDrive")
+            basedir = Path("/content/drive/MyDrive")
         # if Google Drive is not mounted, do that now
         if not basedir.is_dir():
             from google.colab import drive
