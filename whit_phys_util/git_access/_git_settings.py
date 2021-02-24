@@ -15,18 +15,21 @@ class git_settings(BaseSettings):
     gh_token: str = ""
 
     class Config:
-        env_file = ".env" # default setting
+        env_file = None # default setting
         if "google.colab" in sys.modules:
             basedir = Path("/content/drive/MyDrive")
-        # if Google Drive is not mounted, do that now
-        if not basedir.is_dir():
-            from google.colab import drive
-            drive.mount('/content/drive')
+            # if Google Drive is not mounted, do that now
+            if not basedir.is_dir():
+                from google.colab import drive
+                drive.mount('/content/drive')
+        else:
+            basedir = Path.home()
         if basedir.joinpath(".env").is_file():
             env_file = basedir.joinpath(".env")
         elif basedir.joinpath("dotenv").is_file():
             env_file = basedir.joinpath("dotenv")
         elif basedir.joinpath("dotenv.txt").is_file():
             env_file = basedir.joinpath("dotenv.txt")
+
 
 
