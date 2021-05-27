@@ -8,7 +8,7 @@ from notebook import notebookapp
 from requests import get
 
 
-from ._git_access import LocalRepo
+from .git_access import LocalRepo
 
 def convert_to_pdf(repo=None):
     for srv in notebookapp.list_running_servers():
