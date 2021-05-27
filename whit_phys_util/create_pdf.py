@@ -5,7 +5,6 @@
 import os
 import shutil
 from notebook import notebookapp
-from notebook.utils import url_unescape
 from requests import get
 
 
@@ -23,6 +22,7 @@ def convert_to_pdf(repo=None):
             pass
         nb_loc = nb_server_info['path']
         if 'fileId=' in nb_loc: # Looks like we are in Colab
+            nb_name = nb_server_info['name']
             from google.colab import files
             gdrive_home = '/content/drive/MyDrive'
             nb_path = gdrive_home + '/Colab Notebooks/'
@@ -34,16 +34,16 @@ def convert_to_pdf(repo=None):
                 drive.mount('/content/drive')
 
             if 'fileId=https%3A%2F%2Fgithub.com%2F' in nb_loc: # and file on GitHub
-                nb_name = url_unescape(nb_server_info['name'])
                 print('Note: Conversion will be performed on the most recent commit of this notebook on GitHub, not the working copy.')
+                nb_name_us = nb_name.replace("%20","_")
+                nb_name = nb_name.replace("%20"," ")
                 if isinstance(repo,LocalRepo):
                     repo.pull()
-                    shutil.copy(os.path.join(repo.repo_path, nb_name), os.path.join(tmp_path, nb_name))
+                    shutil.copy(os.path.join(repo.repo_path, nb_name_us), os.path.join(tmp_path, nb_name))
                 else:
                     print('Please pass a GitHub repo object as an argument.')
                     return
             else:
-                nb_name = nb_server_info['name']
                 if not os.path.isfile(os.path.join(nb_path, nb_name)):
                     raise ValueError(f"file '{nb_name}' not found in path '{nb_path}'")
                 else:
