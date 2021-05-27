@@ -7,5 +7,6 @@ VERSION = __version__.split(".")
 
 from .git_access import *
 from .pretty_fit import fitTable, prettyPolyFit
+from .create_pdf import convert_to_pdf
 
-__all__ = ["local_repository", "fitTable", "prettyPolyFit"]
+__all__ = ["local_repository", "fitTable", "prettyPolyFit", "convert_to_pdf"]
