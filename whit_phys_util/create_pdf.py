@@ -24,6 +24,7 @@ def convert_to_pdf(repo=None):
         if 'fileId=' in nb_loc: # Looks like we are in Colab
             from google.colab import files
             nb_name = nb_server_info['name']
+            print(f"Preparing to convert '{nb_name}'")
             gdrive_home = '/content/drive/MyDrive'
             nb_path = gdrive_home + '/Colab Notebooks/'
             tmp_path = '/tmp'
@@ -37,7 +38,7 @@ def convert_to_pdf(repo=None):
                 print('Note: Conversion will be performed on the most recent commit of this notebook on GitHub, not the working copy.')
                 if isinstance(repo,LocalRepo):
                     repo.pull()
-                    shutil.copy(repo.repo_path, os.path.join(tmp_path, nb_name))
+                    shutil.copy(os.path.join(repo.repo_path, nb_name), os.path.join(tmp_path, nb_name))
                 else:
                     print('Please pass a GitHub repo object as an argument.')
                     return
