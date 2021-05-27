@@ -36,6 +36,7 @@ def convert_to_pdf(repo=None):
             if 'fileId=https%3A%2F%2Fgithub.com%2F' in nb_loc: # and file on GitHub
                 print('Note: Conversion will be performed on the most recent commit of this notebook on GitHub, not the working copy.')
                 nb_name_us = nb_name.replace("%20","_")
+                nb_name_us = nb_name_us.replace("-","_")
                 nb_name = nb_name.replace("%20"," ")
                 if isinstance(repo,LocalRepo):
                     repo.pull()
