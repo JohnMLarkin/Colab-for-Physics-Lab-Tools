@@ -38,7 +38,8 @@ def convert_to_pdf(repo=None):
                 print('Note: Conversion will be performed on the most recent commit of this notebook on GitHub, not the working copy.')
                 nb_name_us = nb_name.replace("%20","_")
                 nb_name_us = nb_name_us.replace("-","_")
-                nb_name = nb_name.replace("%20"," ")
+                # nb_name = nb_name.replace("%20"," ")
+                nb_name = nb_name_us
                 if isinstance(repo,LocalRepo):
                     repo.pull()
                     shutil.copy(os.path.join(repo.repo_path, nb_name_us), os.path.join(tmp_path, nb_name))
