@@ -5,13 +5,13 @@
 import os
 import shutil
 from notebook import notebookapp
+import nbformat
 from requests import get
-
 
 from .git_access import LocalRepo
 from .git_access._run_cmd import run_cmd 
 
-def convert_to_pdf(repo=None):
+def notebook_to_pdf(repo=None,author=None,title=None):
     for srv in notebookapp.list_running_servers():
         try:
             if srv['token'] == '' and not srv['password']:
@@ -52,11 +52,27 @@ def convert_to_pdf(repo=None):
                 else:
                     shutil.copy(os.path.join(nb_path, nb_name), os.path.join(tmp_path, nb_name))
             
+
+
             # If PDF with the same name exists, remove it
             nb_file = os.path.join(tmp_path, nb_name)
             pdf_file = os.path.join(tmp_path, nb_name.split(".")[0] + ".pdf")
             if os.path.isfile(pdf_file):
                 os.remove(pdf_file)
+
+            # Add author(s) and title to notebook metadata (temp version only)
+            tmp_nb = nbformat.read(nb_file, nbformat.NO_CONVERT)
+            if title is not None:
+                tmp_nb['metadata']['title'] = title
+            if author is not None:
+                if isinstance(author,str):
+                    tmp_nb['metadata']['authors'] = [{"name": author}]
+                elif isinstance(author,list):
+                    author_list = []
+                    for person in author:
+                        author_list.append({"name": person})
+                    tmp_nb['metadata']['authors'] = author_list
+            nbformat.write(tmp_nb,nb_file)
             
             # Install the packages required for conversion
             print("Installing required packages. This often takes 1-2 minutes.")
