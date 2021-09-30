@@ -64,7 +64,7 @@ def convert_to_pdf(repo=None):
 
             # Attempt to convert to PDF (via LaTeX)
             print(f"Preparing to convert '{nb_name}'")
-            run_cmd(f"jupyter nbconvert --output-dir='{tmp_path}' '{nb_file}' --to pdf")
+            run_cmd(f"jupyter nbconvert --output-dir='{tmp_path}' '{nb_file}' --to pdf",verbose=True)
 
             # Attempt to download
             files.download(pdf_file)
