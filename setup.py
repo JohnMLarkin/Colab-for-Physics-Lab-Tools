@@ -16,7 +16,7 @@ setuptools.setup(
     url="https://github.com/JohnMLarkin/Colab-for-Physics-Lab-Tools",
     install_requires = [
         'pydantic-settings >= 2.0.3',
-        'python-dotenv == 0.10.4',
+        'python-dotenv >= 1.0.0',
     ],
     packages=setuptools.find_packages(),
     classifiers=[
