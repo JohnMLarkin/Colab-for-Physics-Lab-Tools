@@ -1,6 +1,8 @@
 import os
 import sys
 from getpass import getpass
+from google.colab import userdata
+import ast
 
 from ._run_cmd import run_secret_cmd, run_cmd
 from ._git_settings import git_settings
@@ -20,6 +22,8 @@ class LocalRepo:
 
         if auth_method == "env":
             self.env_authentication()
+        elif auth_method == "secrets":
+            self.colab_secrets_authentication()
         else:
             self.cli_authentication()
 
@@ -306,6 +310,28 @@ class LocalRepo:
         if push:
             print(f"Command: < git push --force > failed. Check your permissions.")
 
+    def colab_secrets_authentication(self):
+        """
+        colabs_secrets_authentication
+
+        Attempts to obtain GitHub credentials from Colab-stored Secrets.
+        Used when auth_method keyword passed to class instance is "secrets"
+        """
+        try:
+            gh_details = ast.literal_eval(userdata.get("gh_details"))
+        except:
+            print("A Colab Secret named 'gh_details' must be created with GitHub credential information.")
+            print("The correct format for the value is {'name': 'YourUserName', 'email': 'YourEmail', 'token': 'ClassicPersonalAccessToken'}")
+
+        try:
+            self.github_token = gh_details['token']
+            self.github_user = gh_details['name']
+            self.github_email = gh_details['email']
+        except KeyError as error:
+            print("A Colab Secret named 'gh_details' has been detected. This should have your GitHub credential information.")
+            print("The correct format for the value is {'name': 'YourUserName', 'email': 'YourEmail', 'token': 'ClassicPersonalAccessToken'}")
+            print(f"The key {error} was expected but not found.")
+
 
     def env_authentication(self):
         """
@@ -333,7 +359,6 @@ class LocalRepo:
         Used only if auth_method keyword passed to class instance is *not* "env"
 
         """
-
         self.github_user = input("GitHub Username :: ")
         self.github_email = input("GitHub Email :: ")
         self.github_token = getpass("GitHub Authorization Token :: ")

@@ -17,8 +17,9 @@ def local_repository(repo, clone=True, branch="main", auth_method="env", expert_
             locally and uploaded to GitHub, rather than a clone
         branch="main" - the specific branch to clone, if desired
         auth_method="env" - indicates where to look for your GitHub credentials.
-            "env" will expect them in a .env or dotenv file on Google Drive, anything
-            else will prompt the user to input them.
+            "env" will expect them in a .env or dotenv file on Google Drive, 
+            "secrets" will expect them in a Colab Secrets key:value pair,
+            and anything else will prompt the user to input them.
         expert_mode=False - indicates whether higher risk git commands are permitted
         verbose=False - indicates whether output of selected git commands should be displayed
 
