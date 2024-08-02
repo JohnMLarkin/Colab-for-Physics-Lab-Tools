@@ -17,6 +17,7 @@ setuptools.setup(
     install_requires = [
         'pydantic >= 1.7.3',
         'python-dotenv >= 0.10.4',
+        'ipydatagrid >= 1.3.2'
     ],
     packages=setuptools.find_packages(),
     classifiers=[
