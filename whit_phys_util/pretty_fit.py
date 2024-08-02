@@ -21,7 +21,7 @@ def fitTable(fitParam, fitCov, paramLabels = ['slope', 'intercept'], ci_factor =
     """
     return pd.DataFrame(data = [fitParam, ci_factor*np.sqrt(np.diagonal(fitCov))], columns = paramLabels, index = ['value', 'uncertainty'])
 
-def prettyPolyFit(x, y, deg = 1, yerr = None, paramLabels = ['slope', 'intercept'], ci_factor = 2):
+def prettyPolyFit(x, y, deg = 1, yerr = None, paramLabels = None, ci_factor = 2):
     """
     prettyPolyFit
 
@@ -35,7 +35,9 @@ def prettyPolyFit(x, y, deg = 1, yerr = None, paramLabels = ['slope', 'intercept
     KEYWORDS:
         deg=1 - degree of polynomial fit to data (1 = line, 2 = quadratic)
         yerr=None - NumPy array of uncertainties in dependent values
-        paramLabels=['slope','intercept'] - list of strings, default assumes linear fit with slope first
+        paramLabels=None - list of strings, if None it will be set to default dependent on value of deg
+          If deg = 1 then paramLabels=['slope','intercept']
+          If deg > 1 then paramLabels=['c0','c1','c2',...]
         ci_factor=2 - confidence interval factor (1 = 68%, 2 = 95.4%, etc.), only used if yerr=None. If yerr provided then confidence interval is same as those uncertainties.
 
     RETURNS:
@@ -48,4 +50,11 @@ def prettyPolyFit(x, y, deg = 1, yerr = None, paramLabels = ['slope', 'intercept
         fitPoly, fitCov = np.polyfit(x, y, deg, w=1/yerr, cov=True)
     else:
         fitPoly, fitCov = np.polyfit(x, y, deg, cov=True)
+    if paramLabels is None:
+        if deg == 1:
+            paramLabels = ['slope','intercept']
+        else:
+            paramLabels = []
+            for i in range(deg):
+                paramLabels.append(f"c{i}")
     return (fitTable(fitPoly, fitCov, paramLabels=paramLabels, ci_factor=ci_factor), np.poly1d(fitPoly)) 

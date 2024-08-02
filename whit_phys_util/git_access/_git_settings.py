@@ -6,7 +6,7 @@ and look for the .env/dotenv file in /content/drive/MyDrive.
 # Approach inspired by the work of GitHub user ffreemt
 # found at https://github.com/ffreemt/colab-misc-utils
 import sys
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 from pathlib import Path
 
 class git_settings(BaseSettings):
