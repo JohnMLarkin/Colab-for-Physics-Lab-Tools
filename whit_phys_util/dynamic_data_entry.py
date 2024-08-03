@@ -26,7 +26,7 @@ class DynamicDataEntry:
         except FileNotFoundError:
             d = {}
             for col in columns:
-            d[col] = np.zeros(num_rows)
+                d[col] = np.zeros(num_rows)
             df = pd.DataFrame(data=d)
         height = min(20*num_rows + 30, self.max_height)
         self.dg = DataGrid(df, editable=True, layout={'height': f"{height}px"}, auto_fit_columns=True,selection_mode='row')
