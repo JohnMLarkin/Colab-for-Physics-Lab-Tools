@@ -15,8 +15,8 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/JohnMLarkin/Colab-for-Physics-Lab-Tools",
     install_requires = [
-        'pydantic-settings >= 2.0.3',
-        'python-dotenv >= 1.0.0',
+        'ipydatagrid >= 1.3.2',
+        'pydantic-settings >= 2.4.0'
     ],
     packages=setuptools.find_packages(),
     classifiers=[
@@ -24,5 +24,5 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.6',
+    python_requires='>=3.10',
 )
