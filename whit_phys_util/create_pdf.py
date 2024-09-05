@@ -79,7 +79,7 @@ def notebook_to_pdf(repo=None,author=None,title=None):
             
             # Install the packages required for conversion
             print("Installing required packages. This often takes 1-2 minutes.")
-            run_cmd("apt update >> /dev/null && apt install texlive-xetex texlive-fonts-recommended texlive-latex-recommended >> /dev/null")
+            run_cmd("apt update >> /dev/null && apt install texlive-xetex texlive-fonts-recommended texlive-latex-recommended pandoc >> /dev/null")
 
             # Attempt to convert to PDF (via LaTeX)
             print(f"Preparing to convert '{nb_name}'")
