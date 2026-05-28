@@ -7,9 +7,10 @@
 
 Tools to support the use of Google Colab + GitHub for teaching undergraduate physics labs. Support for private repositories enables the use of GitHub Classroom.
 
+Starting in version 2.0 the conditional importation of Colab-specific components was enabled, allowing the more general tools to be used in other environments (such as in a VS Code notebook running locally).
+
 ## Installation
 
-This package is primarily intended for use within Google Colab. To install in a Colab notebook:
 ```
 !pip install whit-phys-util
 ```
